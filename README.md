@@ -20,6 +20,8 @@ Check for unavaliable songs in your "Loved Tracks" playlist
 4. Wait until script check all your loved tracks *(This process can be long depending on "Loved Tracks" length)*
 5. After check, you will see all unavailable tracks names and position in your "Loved Tracks" playlist *(Or you will see message that all tracks is available)*
 
+> This script will only tell you that some song is unavailable in your country *(Depending on country from your Spotify Access Token)*. To check where album of song is available, use [albums-availability](https://kaaes.github.io/albums-availability/) app by [kaaes](https://github.com/kaaes) *(Check brief description on [Spotify Developers](https://developer.spotify.com/community/showcase/album-availability/) page)*
+
 ## Credits
 
 This script is using [spotipy](https://github.com/plamere/spotipy) library to communicate with Spotify API
