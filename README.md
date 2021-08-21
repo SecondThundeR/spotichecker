@@ -2,6 +2,9 @@
 
 Check for unavaliable songs in your "Loved Tracks" playlist
 
+> Note: This script was made for your own needs and
+> there is a chance that this work will not develop over time
+
 ## How to setup this script
 
 1. Go to [Spotify Developers Dashboard](https://developer.spotify.com/dashboard) page and create an app
