@@ -2,8 +2,8 @@
 
 Check for unavaliable songs in your "Loved Tracks" playlist
 
-> Note: This script was made for your own needs and
-> there is a chance that this work will not develop over time
+> Note: This script was made for my own needs and
+> there is a chance that this work will not develop over time and can be abandoned
 
 ## How to setup this script
 
