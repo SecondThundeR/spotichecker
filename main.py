@@ -38,7 +38,7 @@ def check_loved_tracks_unavailability():
         print(f"{unavailable_tracks_counter} track(s) out of {offset_counter} track(s) are unavilable!")
         print("\nHere are all list of unavailable songs:")
         for pos, name in unavailable_tracks_dict.items():
-            print(f"{pos} Track {name} is unavailable in your country")
+            print(f"[{pos}] Track {name} is unavailable in your country")
     print(f'\nYour "Loved Tracks" checked for {final_time} seconds')
 
 
