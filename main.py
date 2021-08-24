@@ -1,3 +1,9 @@
+"""SpotiChecker.
+
+This is a Python script that uses Spotify API to check for unavailable
+tracks in "Loved Tracks" section or choosen playlist.
+"""
+
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
@@ -6,6 +12,11 @@ from src.utils.check_playlist_tracks import check_playlist_tracks
 
 
 def login_to_spotify():
+    """Trigger Spotify authentication and return current token.
+
+    Returns:
+        spotipy.oauth2.SpotifyOAuth: Spotify OAuth object.
+    """
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
         client_id="ID",
         client_secret="SECRET",
@@ -16,6 +27,14 @@ def login_to_spotify():
 
 
 def main_menu(sp_token):
+    """Print main menu.
+
+    This function handles printing available options and getting
+    input from user to run certain check functions.
+
+    Args:
+        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
+    """
     print("Welcome to SpotiChecker!")
     while True:
         print("Choose option to continue:")
