@@ -10,11 +10,11 @@ This file can also be imported as a module and contains the following functions:
 import time
 
 
-def __check_for_unavailable_songs(sp_token):
+def __check_for_unavailable_songs(sp):
     """Get "Loved Tracks" and check for unavailable.
 
     Args:
-        sp_token: Current active Spotify token
+        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
 
     Returns:
         dict: Unavailable tracks info
@@ -23,12 +23,12 @@ def __check_for_unavailable_songs(sp_token):
     offset_counter = 0
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
-    loved_tracks = sp_token.current_user_saved_tracks(limit=50)
+    loved_tracks = sp.current_user_saved_tracks(limit=50)
     while loved_tracks["items"]:
         tracks_id_list = []
         for item in loved_tracks["items"]:
             tracks_id_list.append(item["track"]["id"])
-        checked_tracks = sp_token.tracks(tracks=tracks_id_list,
+        checked_tracks = sp.tracks(tracks=tracks_id_list,
                                          market="from_token")
         for i, item in enumerate(checked_tracks["tracks"]):
             if item["is_playable"] is False:
@@ -38,7 +38,7 @@ def __check_for_unavailable_songs(sp_token):
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(loved_tracks["items"])
         print(f"Processed {offset_counter} song(s)...", end="\r")
-        loved_tracks = sp_token.current_user_saved_tracks(
+        loved_tracks = sp.current_user_saved_tracks(
             limit=50, offset=offset_counter)
     return {
         "tracks_count": offset_counter,
@@ -68,18 +68,18 @@ def __print_check_details(tracks_info):
         print(f"[{pos}] Track {name} is unavailable in your country")
 
 
-def check_loved_tracks(sp_token):
+def check_loved_tracks(sp):
     """Run all needed functions to check user's "Loved Tracks".
 
     This function also handles calculating time of the check
     and prints it after check summary.
 
     Args:
-        sp_token: Current active Spotify token
+        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
     """
     print('\nProcessing your "Loved Tracks"...')
     start_time = time.perf_counter()
-    un_tracks_info = __check_for_unavailable_songs(sp_token)
+    un_tracks_info = __check_for_unavailable_songs(sp)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
     __print_check_details(un_tracks_info)
