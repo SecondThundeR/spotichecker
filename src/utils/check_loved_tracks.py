@@ -34,7 +34,7 @@ def __check_for_unavailable_songs(sp_token):
             if item['is_playable'] is False:
                 unavailable_tracks_counter += 1
                 track_name = f"\'{item['artists'][0]['name']} - {item['name']}\'"
-                track_pos = f"[{(i + 1) + offset_counter}]"
+                track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(loved_tracks['items'])
         print(f'Processed {offset_counter} song(s)...', end='\r')
