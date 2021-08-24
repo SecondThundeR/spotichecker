@@ -83,7 +83,7 @@ def __check_for_unavailable_songs(sp_token, playlist_id):
                 unavailable_tracks_counter += 1
                 track_info = item["track"]
                 track_name = (f"'{track_info['artists'][0]['name']} "
-                              "- {track_info['name']}'")
+                              f"- {track_info['name']}'")
                 track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(playlist_tracks["items"])
@@ -104,7 +104,7 @@ def __print_check_details(tracks_info):
         sp_token: Current active Spotify token
         tracks_info: Dictionary with track info
     """
-    tracks_count = {tracks_info["tracks_count"]}
+    tracks_count = tracks_info["tracks_count"]
     un_count = tracks_info["un_count"]
     if un_count == 0:
         print(f"All ({tracks_count}) tracks are available for listening!")
