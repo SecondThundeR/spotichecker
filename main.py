@@ -4,6 +4,7 @@ This is a Python script that uses Spotify API to check for unavailable
 tracks in "Loved Tracks" section or choosen playlist.
 """
 
+import sys
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
@@ -56,7 +57,7 @@ def main_menu(sp_token):
             print("\n[Info] This feature currently not implemented!\n")
         elif option == 0:
             print("See you soon!")
-            exit()
+            sys.exit()
 
 
 if __name__ == "__main__":
