@@ -10,4 +10,4 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="ID",
 
 
 if __name__ == '__main__':
-    check_loved_tracks()
+    check_loved_tracks(sp)
