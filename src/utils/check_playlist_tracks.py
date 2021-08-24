@@ -53,7 +53,7 @@ def __get_playlist_tracks(sp_token, playlist_id, offset):
     playlist_tracks = sp_token.playlist_items(
         playlist_id, limit=100,
         offset=offset,
-        fields='items.track.id, items.track.is_playable',
+        fields='items.track.id, items.track.name, items.track.artists, items.track.is_playable',
         market="from_token"
     )
     return playlist_tracks
@@ -78,8 +78,10 @@ def __check_for_unavailable_songs(sp_token, playlist_id):
         for i, item in enumerate(playlist_tracks['items']):
             if item['track']['is_playable'] is False:
                 unavailable_tracks_counter += 1
+                track_info = item['track']
+                track_name = f"\'{track_info['artists'][0]['name']} - {track_info['name']}\'"
                 track_pos = f"{(i + 1) + offset_counter}"
-                unavailable_tracks_dict[track_pos] = item['track']['id']
+                unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(playlist_tracks['items'])
         print(f'Processed {offset_counter} song(s)...', end='\r')
         playlist_tracks = __get_playlist_tracks(sp_token, playlist_id, offset_counter)
@@ -88,25 +90,6 @@ def __check_for_unavailable_songs(sp_token, playlist_id):
         "un_count": unavailable_tracks_counter,
         "un_tracks": unavailable_tracks_dict
     }
-
-
-def __convert_ids_to_track_names(sp_token, tracks_ids):
-    """Iterate through dictionary and change IDs to track names.
-
-    TODO: Try to use `tracks` method instead of `track` method.
-
-    Args:
-        sp_token: Current active Spotify token
-        tracks_ids: Dictionary with track IDs
-
-    Returns:
-        dict: Dictionary with track names
-    """
-    for id in tracks_ids:
-        track_info = sp_token.track(tracks_ids[id], market="from_token")
-        track_name = f"\'{track_info['artists'][0]['name']} - {track_info['name']}\'"
-        tracks_ids[id] = track_name
-    return tracks_ids
 
 
 def __print_check_details(sp_token, tracks_info):
@@ -121,8 +104,7 @@ def __print_check_details(sp_token, tracks_info):
         return
     print(f'{tracks_info["un_count"]} track(s) out of {tracks_info["tracks_count"]} track(s) are unavilable!')
     print("\nHere are all list of unavailable songs:")
-    converted_tracks_dict = __convert_ids_to_track_names(sp_token, tracks_info["un_tracks"])
-    for pos, name in converted_tracks_dict.items():
+    for pos, name in tracks_info['un_tracks'].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
     return
 
