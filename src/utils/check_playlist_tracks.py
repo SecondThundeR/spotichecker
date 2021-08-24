@@ -8,6 +8,7 @@ This file can also be imported as a module and contains the following functions:
 """
 
 import time
+
 from spotipy.exceptions import SpotifyException
 
 
@@ -26,13 +27,12 @@ def __get_playlist_name(sp_token, playlist_id):
         None: If playlist does not exist
     """
     try:
-        playlist_name = sp_token.playlist(
-            playlist_id, fields=["name"],
-            market="from_token"
-        )
+        playlist_name = sp_token.playlist(playlist_id,
+                                          fields=["name"],
+                                          market="from_token")
     except SpotifyException:
         print("[Info] Unfortunately, something went wrong, exiting check...")
-        return
+        return None
     return playlist_name["name"]
 
 
@@ -51,10 +51,12 @@ def __get_playlist_tracks(sp_token, playlist_id, offset):
         dict: Fetched playlist tracks
     """
     playlist_tracks = sp_token.playlist_items(
-        playlist_id, limit=100,
+        playlist_id,
+        limit=100,
         offset=offset,
-        fields='items.track.id, items.track.name, items.track.artists, items.track.is_playable',
-        market="from_token"
+        fields="items.track.id, items.track.name, "
+        "items.track.artists, items.track.is_playable",
+        market="from_token",
     )
     return playlist_tracks
 
@@ -73,38 +75,44 @@ def __check_for_unavailable_songs(sp_token, playlist_id):
     offset_counter = 0
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
-    playlist_tracks = __get_playlist_tracks(sp_token, playlist_id, offset_counter)
-    while playlist_tracks['items']:
-        for i, item in enumerate(playlist_tracks['items']):
-            if item['track']['is_playable'] is False:
+    playlist_tracks = __get_playlist_tracks(sp_token, playlist_id,
+                                            offset_counter)
+    while playlist_tracks["items"]:
+        for i, item in enumerate(playlist_tracks["items"]):
+            if item["track"]["is_playable"] is False:
                 unavailable_tracks_counter += 1
-                track_info = item['track']
-                track_name = f"\'{track_info['artists'][0]['name']} - {track_info['name']}\'"
+                track_info = item["track"]
+                track_name = (f"'{track_info['artists'][0]['name']} "
+                              "- {track_info['name']}'")
                 track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
-        offset_counter += len(playlist_tracks['items'])
-        print(f'Processed {offset_counter} song(s)...', end='\r')
-        playlist_tracks = __get_playlist_tracks(sp_token, playlist_id, offset_counter)
+        offset_counter += len(playlist_tracks["items"])
+        print(f"Processed {offset_counter} song(s)...", end="\r")
+        playlist_tracks = __get_playlist_tracks(sp_token, playlist_id,
+                                                offset_counter)
     return {
         "tracks_count": offset_counter,
         "un_count": unavailable_tracks_counter,
-        "un_tracks": unavailable_tracks_dict
+        "un_tracks": unavailable_tracks_dict,
     }
 
 
-def __print_check_details(sp_token, tracks_info):
+def __print_check_details(tracks_info):
     """Get info from check and print summary of it.
 
     Args:
         sp_token: Current active Spotify token
         tracks_info: Dictionary with track info
     """
-    if tracks_info["un_count"] == 0:
-        print(f'All ({tracks_info["tracks_count"]}) tracks are available for listening!')
+    tracks_count = {tracks_info["tracks_count"]}
+    un_count = tracks_info["un_count"]
+    if un_count == 0:
+        print(f"All ({tracks_count}) tracks are available for listening!")
         return
-    print(f'{tracks_info["un_count"]} track(s) out of {tracks_info["tracks_count"]} track(s) are unavilable!')
+    print(
+        f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
-    for pos, name in tracks_info['un_tracks'].items():
+    for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
     return
 
@@ -122,11 +130,10 @@ def check_playlist_tracks(sp_token, playlist_id):
     playlist_name = __get_playlist_name(sp_token, playlist_id)
     if playlist_name is None:
         return
-    print(f"Processing \"{playlist_name}\" playlist...")
+    print(f'Processing "{playlist_name}" playlist...')
     start_time = time.perf_counter()
     un_tracks_info = __check_for_unavailable_songs(sp_token, playlist_id)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
-    __print_check_details(sp_token, un_tracks_info)
-    print(f'\n\"{playlist_name}\" checked for {final_time} seconds')
-    return
+    __print_check_details(un_tracks_info)
+    print(f'\n"{playlist_name}" checked for {final_time} seconds')

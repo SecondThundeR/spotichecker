@@ -7,7 +7,6 @@ This file can also be imported as a module and contains the following functions:
     * check_loved_tracks - runs all needed functions to check "Loved Tracks"
 """
 
-
 import time
 
 
@@ -25,24 +24,26 @@ def __check_for_unavailable_songs(sp_token):
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
     loved_tracks = sp_token.current_user_saved_tracks(limit=50)
-    while loved_tracks['items']:
+    while loved_tracks["items"]:
         tracks_id_list = []
-        for item in loved_tracks['items']:
-            tracks_id_list.append(item['track']['id'])
-        checked_tracks = sp_token.tracks(tracks=tracks_id_list, market='from_token')
-        for i, item in enumerate(checked_tracks['tracks']):
-            if item['is_playable'] is False:
+        for item in loved_tracks["items"]:
+            tracks_id_list.append(item["track"]["id"])
+        checked_tracks = sp_token.tracks(tracks=tracks_id_list,
+                                         market="from_token")
+        for i, item in enumerate(checked_tracks["tracks"]):
+            if item["is_playable"] is False:
                 unavailable_tracks_counter += 1
-                track_name = f"\'{item['artists'][0]['name']} - {item['name']}\'"
+                track_name = f"'{item['artists'][0]['name']} - {item['name']}'"
                 track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
-        offset_counter += len(loved_tracks['items'])
-        print(f'Processed {offset_counter} song(s)...', end='\r')
-        loved_tracks = sp_token.current_user_saved_tracks(limit=50, offset=offset_counter)
+        offset_counter += len(loved_tracks["items"])
+        print(f"Processed {offset_counter} song(s)...", end="\r")
+        loved_tracks = sp_token.current_user_saved_tracks(
+            limit=50, offset=offset_counter)
     return {
         "tracks_count": offset_counter,
         "un_count": unavailable_tracks_counter,
-        "un_tracks": unavailable_tracks_dict
+        "un_tracks": unavailable_tracks_dict,
     }
 
 
@@ -55,10 +56,13 @@ def __print_check_details(tracks_info):
     Args:
         tracks_info: Dictionary with track info
     """
-    if tracks_info["un_count"] == 0:
-        print(f'All ({tracks_info["tracks_count"]}) tracks are available for listening!')
+    tracks_count = tracks_info["tracks_count"]
+    un_count = tracks_info["un_count"]
+    if un_count == 0:
+        print(f"All ({tracks_count}) tracks are available for listening!")
         return
-    print(f'{tracks_info["un_count"]} track(s) out of {tracks_info["tracks_count"]} track(s) are unavilable!')
+    print(
+        f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
@@ -80,4 +84,3 @@ def check_loved_tracks(sp_token):
     final_time = stop_time - start_time
     __print_check_details(un_tracks_info)
     print(f'\nYour "Loved Tracks" checked for {final_time} seconds')
-    return
