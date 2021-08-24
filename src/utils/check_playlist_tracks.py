@@ -31,7 +31,7 @@ def __get_playlist_name(sp_token, playlist_id):
                                           fields=["name"],
                                           market="from_token")
     except SpotifyException:
-        print("[Info] Unfortunately, something went wrong, exiting check...")
+        print("[Info] Unfortunately, something went wrong, exiting check...\n")
         return None
     return playlist_name["name"]
 
@@ -130,10 +130,11 @@ def check_playlist_tracks(sp_token, playlist_id):
     playlist_name = __get_playlist_name(sp_token, playlist_id)
     if playlist_name is None:
         return
-    print(f'Processing "{playlist_name}" playlist...')
+    print(f'\nProcessing "{playlist_name}" playlist...')
     start_time = time.perf_counter()
     un_tracks_info = __check_for_unavailable_songs(sp_token, playlist_id)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
     __print_check_details(un_tracks_info)
     print(f'\n"{playlist_name}" checked for {final_time} seconds')
+    input("Press any button to continue...\n")

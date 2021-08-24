@@ -77,10 +77,11 @@ def check_loved_tracks(sp_token):
     Args:
         sp_token: Current active Spotify token
     """
-    print('Processing your "Loved Tracks"...')
+    print('\nProcessing your "Loved Tracks"...')
     start_time = time.perf_counter()
     un_tracks_info = __check_for_unavailable_songs(sp_token)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
     __print_check_details(un_tracks_info)
     print(f'\nYour "Loved Tracks" checked for {final_time} seconds')
+    input("Press any button to continue...\n")
