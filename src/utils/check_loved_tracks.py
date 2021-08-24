@@ -28,8 +28,7 @@ def __check_for_unavailable_songs(sp):
         tracks_id_list = []
         for item in loved_tracks["items"]:
             tracks_id_list.append(item["track"]["id"])
-        checked_tracks = sp.tracks(tracks=tracks_id_list,
-                                         market="from_token")
+        checked_tracks = sp.tracks(tracks=tracks_id_list, market="from_token")
         for i, item in enumerate(checked_tracks["tracks"]):
             if item["is_playable"] is False:
                 unavailable_tracks_counter += 1
@@ -38,8 +37,8 @@ def __check_for_unavailable_songs(sp):
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(loved_tracks["items"])
         print(f"Processed {offset_counter} song(s)...", end="\r")
-        loved_tracks = sp.current_user_saved_tracks(
-            limit=50, offset=offset_counter)
+        loved_tracks = sp.current_user_saved_tracks(limit=50,
+                                                    offset=offset_counter)
     return {
         "tracks_count": offset_counter,
         "un_count": unavailable_tracks_counter,
