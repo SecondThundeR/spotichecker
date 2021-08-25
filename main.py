@@ -27,7 +27,7 @@ def login_to_spotify():
     return sp
 
 
-def main_menu(sp_token):
+def main_menu(sp):
     """Print main menu.
 
     This function handles printing available options and getting
@@ -49,10 +49,10 @@ def main_menu(sp_token):
             print("You entered something wrong. Try again\n")
             continue
         if option == 1:
-            check_loved_tracks(sp_token)
+            check_loved_tracks(sp)
         elif option == 2:
             playlist_id = input("\nEnter playlist ID: ")
-            check_playlist_tracks(sp_token, playlist_id)
+            check_playlist_tracks(sp, playlist_id)
         elif option == 3:
             print("\n[Info] This feature currently not implemented!\n")
         elif option == 0:
