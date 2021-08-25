@@ -1,4 +1,4 @@
-"""Utils for checking certain playlist's unavailable tracks
+"""Utils for checking certain playlist's unavailable tracks.
 
 This module contains functions for checking certain playlist's
 unavailable tracks by its ID.

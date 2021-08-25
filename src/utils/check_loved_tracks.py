@@ -1,4 +1,4 @@
-"""Utils for checking user's "Loved Tracks" playlist for unavailable tracks
+"""Utils for checking user's "Loved Tracks" playlist for unavailable tracks.
 
 This module contains functions for "Loved Tracks" playlist
 for unavailable tracks.
