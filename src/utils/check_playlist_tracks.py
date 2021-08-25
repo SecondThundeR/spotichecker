@@ -36,31 +36,6 @@ def __get_playlist_name(sp, playlist_id):
     return playlist_name["name"]
 
 
-def __get_playlist_tracks(sp, playlist_id, offset):
-    """Get 100 tracks with offset and returns them.
-
-    This function calls for `playlist_items` method with
-    certain fields which returns only tracks IDs and is_playable state.
-
-    Args:
-        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
-        playlist_id (str): ID of the playlist to check
-        offset (int): Offset of the tracks to get
-
-    Returns:
-        dict: Fetched playlist tracks
-    """
-    playlist_tracks = sp.playlist_items(
-        playlist_id,
-        limit=100,
-        offset=offset,
-        fields="items.track.id, items.track.name, "
-        "items.track.artists, items.track.is_playable",
-        market="from_token",
-    )
-    return playlist_tracks
-
-
 def __check_for_unavailable_songs(sp, playlist_id):
     """Get playlist tracks and check for unavailable.
 
@@ -75,9 +50,14 @@ def __check_for_unavailable_songs(sp, playlist_id):
     offset_counter = 0
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
-    playlist_tracks = __get_playlist_tracks(sp, playlist_id,
-                                            offset_counter)
-    while playlist_tracks["items"]:
+    playlist_tracks = sp.playlist_items(
+        playlist_id,
+        limit=100,
+        fields="items.track.id, items.track.name, "
+        "items.track.artists, items.track.is_playable, next",
+        market="from_token",
+    )
+    while playlist_tracks["next"]:
         for i, item in enumerate(playlist_tracks["items"]):
             if item["track"]["is_playable"] is False:
                 unavailable_tracks_counter += 1
@@ -88,8 +68,7 @@ def __check_for_unavailable_songs(sp, playlist_id):
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(playlist_tracks["items"])
         print(f"Processed {offset_counter} song(s)...", end="\r")
-        playlist_tracks = __get_playlist_tracks(sp, playlist_id,
-                                                offset_counter)
+        playlist_tracks = sp.next(playlist_tracks)
     return {
         "tracks_count": offset_counter,
         "un_count": unavailable_tracks_counter,
