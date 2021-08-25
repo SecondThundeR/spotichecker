@@ -5,11 +5,13 @@ tracks in "Loved Tracks" section or choosen playlist.
 """
 
 import sys
+
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 from src.utils.check_loved_tracks import check_loved_tracks
 from src.utils.check_playlist_tracks import check_playlist_tracks
+from src.utils.get_users_playlists import get_users_playlists
 
 
 def login_to_spotify():
@@ -36,7 +38,7 @@ def main_menu(sp):
     Args:
         sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
     """
-    print("Welcome to SpotiChecker!")
+    print("Welcome to SpotiChecker!\n")
     while True:
         print("Choose option to continue:")
         print('1. Check your "Loved Tracks"')
@@ -55,11 +57,12 @@ def main_menu(sp):
             check_playlist_tracks(sp, playlist_id)
         elif option == 3:
             print("\n[Info] This feature currently not implemented!\n")
+            # get_users_playlists(sp)
         elif option == 0:
             print("See you soon!")
             sys.exit()
 
 
 if __name__ == "__main__":
-    spotify_token = login_to_spotify()
-    main_menu(spotify_token)
+    spotify_oauth = login_to_spotify()
+    main_menu(spotify_oauth)
