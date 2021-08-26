@@ -15,9 +15,9 @@ Check for unavaliable songs in your "Loved Tracks" playlist or any other playlis
 ## How to use this script
 
 0. Make sure you have installed Python 3.x
-1. Open `main.py` with any code editor and paste the `CLIENT_ID` and `CLIENT_SECRET` in the code
-2. Open terminal and run `python main.py`
-3. Login to Spotify in opened browser window *(No data is transferred to third parties)*
+1. Open terminal and run `python main.py`
+2. On first run, script will ask you to paste your `CLIENT_ID` and `CLIENT_SECRET` to store them and use later on
+3. Then, login to Spotify in opened browser window *(No data is transferred to third parties)*
 4. Choose needed option in text menu *(This process can be long depending on "Loved Tracks"/Choosen playlist length)*
 5. After check, you will see all unavailable tracks names and position in your "Loved Tracks"/Choosen playlist *(Or you will see message that all tracks are available)*
 
