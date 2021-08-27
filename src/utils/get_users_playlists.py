@@ -1,6 +1,6 @@
 """Utils for getting user's playlists.
 
-This module contains functions for managing gettings and
+This module contains functions for getting and
 parsing user's playlists.
 
 This file can also be imported as a module and contains the following functions:
