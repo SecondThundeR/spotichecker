@@ -4,18 +4,16 @@ This is a Python script that uses Spotify API to check for unavailable
 tracks in "Loved Tracks" section or choosen playlist.
 """
 
-import configparser
+
 import os
 import sys
-
 import spotipy
+import configparser
 from spotipy.oauth2 import SpotifyOAuth
-
 from src.utils.check_loved_tracks import check_loved_tracks
 from src.utils.check_playlist_tracks import check_playlist_tracks
 from src.utils.credentials_manager import initial_configuration
 from src.utils.get_users_playlists import get_users_playlists
-
 
 
 def credentials_checker():

@@ -7,6 +7,7 @@ This file can also be imported as a module and contains the following functions:
     * initial_configuration() - manages initial configuration of .ini file
 """
 
+
 import configparser
 
 
@@ -38,7 +39,10 @@ def initial_configuration():
             print("You entered nothing. Try again.")
             continue
         break
-    credentials_data = {"CLIENT_ID": client_id, "CLIENT_SECRET": client_secret}
+    credentials_data = {
+        "CLIENT_ID": client_id,
+        "CLIENT_SECRET": client_secret
+    }
     config = configparser.ConfigParser()
     config["CREDENTIALS"] = credentials_data
     with open("spotichecker.ini", "w") as configfile:

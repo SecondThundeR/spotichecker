@@ -7,8 +7,8 @@ This file can also be imported as a module and contains the following functions:
     * check_playlist_tracks - runs all needed functions to check a playlist
 """
 
-import time
 
+import time
 from spotipy.exceptions import SpotifyException
 
 
@@ -27,13 +27,14 @@ def __get_playlist_name(sp, playlist_id):
         None: If playlist does not exist
     """
     try:
-        playlist_name = sp.playlist(playlist_id,
-                                    fields=["name"],
-                                    market="from_token")
+        playlist_name = sp.playlist(
+            playlist_id, fields=["name"],
+            market="from_token"
+        )["name"]
     except SpotifyException:
         print("[Info] Unfortunately, something went wrong, exiting check...\n")
         return None
-    return playlist_name["name"]
+    return playlist_name
 
 
 def __check_for_unavailable_songs(sp, playlist_id):
@@ -51,19 +52,18 @@ def __check_for_unavailable_songs(sp, playlist_id):
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
     playlist_tracks = sp.playlist_items(
-        playlist_id,
-        limit=100,
+        playlist_id, limit=100,
         fields="items.track.id, items.track.name, "
         "items.track.artists, items.track.is_playable, next",
-        market="from_token",
+        market="from_token"
     )
     while playlist_tracks["next"]:
         for i, item in enumerate(playlist_tracks["items"]):
             if item["track"]["is_playable"] is False:
                 unavailable_tracks_counter += 1
                 track_info = item["track"]
-                track_name = (f"'{track_info['artists'][0]['name']} "
-                              f"- {track_info['name']}'")
+                track_name = f"'{track_info['artists'][0]['name']} " \
+                             f"- {track_info['name']}'"
                 track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(playlist_tracks["items"])
@@ -87,8 +87,7 @@ def __print_check_details(tracks_info):
     if un_count == 0:
         print(f"All ({tracks_count}) tracks are available for listening!")
         return
-    print(
-        f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
+    print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")

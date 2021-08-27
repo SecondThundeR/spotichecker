@@ -7,6 +7,7 @@ This file can also be imported as a module and contains the following functions:
     * check_loved_tracks - runs all needed functions to check "Loved Tracks"
 """
 
+
 import time
 
 
@@ -59,8 +60,7 @@ def __print_check_details(tracks_info):
     if un_count == 0:
         print(f"All ({tracks_count}) tracks are available for listening!")
         return
-    print(
-        f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
+    print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
