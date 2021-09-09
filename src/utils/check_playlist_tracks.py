@@ -50,6 +50,7 @@ def __check_for_unavailable_songs(sp, playlist_id):
     """
     offset_counter = 0
     unavailable_tracks_counter = 0
+    local_tracks = 0
     unavailable_tracks_dict = {}
     playlist_tracks = sp.playlist_items(
         playlist_id, limit=100,
@@ -57,15 +58,19 @@ def __check_for_unavailable_songs(sp, playlist_id):
         "items.track.artists, items.track.is_playable, next",
         market="from_token"
     )
-    while playlist_tracks["next"]:
+    while playlist_tracks is not None:
         for i, item in enumerate(playlist_tracks["items"]):
-            if item["track"]["is_playable"] is False:
-                unavailable_tracks_counter += 1
-                track_info = item["track"]
-                track_name = f"'{track_info['artists'][0]['name']} " \
-                             f"- {track_info['name']}'"
-                track_pos = f"{(i + 1) + offset_counter}"
-                unavailable_tracks_dict[track_pos] = track_name
+            try:
+                if item["track"]["is_playable"] is False:
+                    unavailable_tracks_counter += 1
+                    track_info = item["track"]
+                    track_name = f"'{track_info['artists'][0]['name']} " \
+                                f"- {track_info['name']}'"
+                    track_pos = f"{(i + 1) + offset_counter}"
+                    unavailable_tracks_dict[track_pos] = track_name
+            except KeyError:
+                if item["track"]["is_local"]:
+                    local_tracks += 1
         offset_counter += len(playlist_tracks["items"])
         print(f"Processed {offset_counter} song(s)...", end="\r")
         playlist_tracks = sp.next(playlist_tracks)
@@ -73,6 +78,7 @@ def __check_for_unavailable_songs(sp, playlist_id):
         "tracks_count": offset_counter,
         "un_count": unavailable_tracks_counter,
         "un_tracks": unavailable_tracks_dict,
+        "local_count": local_tracks
     }
 
 
@@ -84,10 +90,19 @@ def __print_check_details(tracks_info):
     """
     tracks_count = tracks_info["tracks_count"]
     un_count = tracks_info["un_count"]
+    local_count = tracks_info["local_count"]
     if un_count == 0:
-        print(f"All ({tracks_count}) tracks are available for listening!")
+        if local_count == 0:
+            print(f"All ({tracks_count}) tracks are available for listening!")
+            return
+        print(f"All ({tracks_count - local_count}) tracks are available for listening!")
+        print(f"Note: Ignored {local_count} local track(s)")
         return
-    print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
+    if local_count > 0:
+        print(f"{un_count} track(s) out of {tracks_count - local_count} track(s) are unavilable!")
+        print(f"Note: Ignored {local_count} local track(s)")
+    else:
+        print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
