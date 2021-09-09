@@ -25,7 +25,7 @@ def __check_for_unavailable_songs(sp):
     unavailable_tracks_counter = 0
     unavailable_tracks_dict = {}
     loved_tracks = sp.current_user_saved_tracks(limit=50)
-    while loved_tracks["next"]:
+    while loved_tracks is not None:
         tracks_id_list = []
         for item in loved_tracks["items"]:
             tracks_id_list.append(item["track"]["id"])
