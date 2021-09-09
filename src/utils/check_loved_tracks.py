@@ -37,7 +37,7 @@ def __check_for_unavailable_songs(sp):
                 track_pos = f"{(i + 1) + offset_counter}"
                 unavailable_tracks_dict[track_pos] = track_name
         offset_counter += len(loved_tracks["items"])
-        print(f"Processed {offset_counter} song(s)...", end="\r")
+        print(f"[Info] Processed {offset_counter} song(s)...", end="\r")
         loved_tracks = sp.next(loved_tracks)
     return {
         "tracks_count": offset_counter,
@@ -57,13 +57,16 @@ def __print_check_details(tracks_info):
     """
     tracks_count = tracks_info["tracks_count"]
     un_count = tracks_info["un_count"]
+    print("\n\n======== Check summary ========")
     if un_count == 0:
         print(f"All ({tracks_count}) tracks are available for listening!")
+        print("===============================")
         return
     print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
+    print("===============================")
 
 
 def check_loved_tracks(sp):
@@ -75,11 +78,11 @@ def check_loved_tracks(sp):
     Args:
         sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
     """
-    print('\nProcessing your "Loved Tracks"...')
+    print('\n[Info] Processing your "Loved Tracks"!')
     start_time = time.perf_counter()
     un_tracks_info = __check_for_unavailable_songs(sp)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
     __print_check_details(un_tracks_info)
-    print(f'\nYour "Loved Tracks" checked for {final_time} seconds')
+    print(f'\n[Info] Your "Loved Tracks" checked for {final_time} seconds')
     input("Press any button to continue...\n")

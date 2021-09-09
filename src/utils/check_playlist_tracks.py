@@ -72,7 +72,7 @@ def __check_for_unavailable_songs(sp, playlist_id):
                 if item["track"]["is_local"]:
                     local_tracks += 1
         offset_counter += len(playlist_tracks["items"])
-        print(f"Processed {offset_counter} song(s)...", end="\r")
+        print(f"[Info] Processed {offset_counter} song(s)...", end="\r")
         playlist_tracks = sp.next(playlist_tracks)
     return {
         "tracks_count": offset_counter,
@@ -82,30 +82,36 @@ def __check_for_unavailable_songs(sp, playlist_id):
     }
 
 
-def __print_check_details(tracks_info):
+def __print_check_details(playlist_name, tracks_info):
     """Get info from check and print summary of it.
 
     Args:
+        playlist_name (str): Name of checked playlist
         tracks_info (dict): Dictionary with track info
     """
     tracks_count = tracks_info["tracks_count"]
     un_count = tracks_info["un_count"]
     local_count = tracks_info["local_count"]
+    print("\n\n======== Check summary ========")
     if un_count == 0:
         if local_count == 0:
-            print(f"All ({tracks_count}) tracks are available for listening!")
+            print(f'All ({tracks_count}) tracks are available for listening in "{playlist_name}"!')
+            print("===============================")
             return
-        print(f"All ({tracks_count - local_count}) tracks are available for listening!")
-        print(f"Note: Ignored {local_count} local track(s)")
+        print(f'All ({tracks_count - local_count}) tracks are available for listening in "{playlist_name}"!')
+        print(f"[Note] Ignored {local_count} local track(s)")
+        print("===============================")
         return
     if local_count > 0:
-        print(f"{un_count} track(s) out of {tracks_count - local_count} track(s) are unavilable!")
-        print(f"Note: Ignored {local_count} local track(s)")
+        print(f'{un_count} track(s) out of {tracks_count - local_count} track(s) are unavilable in "{playlist_name}"!')
+        print(f"[Note] Ignored {local_count} local track(s)")
+        print("===============================")
     else:
-        print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
+        print(f'{un_count} track(s) out of {tracks_count} track(s) are unavilable in "{playlist_name}"!')
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")
+    print("===============================")
     return
 
 
@@ -116,17 +122,18 @@ def check_playlist_tracks(sp, playlist_id):
     and prints it after check summary.
 
     Args:
-        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object.
+        sp (spotipy.oauth2.SpotifyOAuth): Spotify OAuth object
         playlist_id (str): ID of the playlist to check
     """
     playlist_name = __get_playlist_name(sp, playlist_id)
     if playlist_name is None:
         return
-    print(f'\nProcessing "{playlist_name}" playlist...')
+    print(f"\n[Info] Chosen {playlist_name} playlist!")
+    print(f'[Info] Processing playlist...', end='\r')
     start_time = time.perf_counter()
     un_tracks_info = __check_for_unavailable_songs(sp, playlist_id)
     stop_time = time.perf_counter()
     final_time = stop_time - start_time
-    __print_check_details(un_tracks_info)
-    print(f'\n"{playlist_name}" checked for {final_time} seconds')
+    __print_check_details(playlist_name, un_tracks_info)
+    print(f'\n[Info] Playlist checked for {final_time} seconds')
     input("Press any button to continue...\n")
