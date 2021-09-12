@@ -74,7 +74,7 @@ def main_menu(sp):
         try:
             option = int(input("> "))
         except ValueError:
-            print("[Error] You entered something wrong. Try again\n")
+            print("[Error] You entered something other than the number. Try again\n")
             continue
         if option == 1:
             check_loved_tracks(sp)
@@ -86,6 +86,9 @@ def main_menu(sp):
         elif option == 0:
             print("=== See you soon! ===")
             sys.exit()
+        else:
+            print("[Error] You entered wrong option number. Try again\n")
+            continue
 
 
 if __name__ == "__main__":
