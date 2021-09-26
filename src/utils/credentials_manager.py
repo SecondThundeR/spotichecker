@@ -21,7 +21,7 @@ def initial_configuration():
         config_obj (ConfigParser): ConfigParser object to create new .ini file.
 
     Returns:
-        dict: Dictionary of CLIEND_ID and CLIEND_SECRET.
+        dict: Dictionary of CLIENT_ID and CLIENT_SECRET.
     """
     print("It looks like you are here for the first time, "
           "let's set everything up!")
