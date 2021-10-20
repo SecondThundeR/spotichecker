@@ -7,22 +7,28 @@ tracks in "Loved Tracks" section or choosen playlist.
 
 import os
 import sys
-import spotipy
 import configparser
+
+import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+
 from src.utils.check_loved_tracks import check_loved_tracks
 from src.utils.check_playlist_tracks import check_playlist_tracks
 from src.utils.credentials_manager import initial_configuration
 from src.utils.get_users_playlists import get_users_playlists
 
+
 SCOPES = "user-library-read, playlist-read-private, playlist-read-collaborative"
 
 
-def credentials_checker():
+def credentials_checker() -> dict:
     """Check if credentials file.
 
     If credentials file doesn't exist, run initial setup to
     create a new credentials file.
+
+    Returns:
+        dict: Dictionary with CLIENT_ID and CLIENT_SECRET
     """
     if os.path.isfile("spotichecker.ini"):
         config = configparser.ConfigParser()
@@ -36,7 +42,7 @@ def credentials_checker():
         return credentials_data
 
 
-def login_to_spotify(credentials):
+def login_to_spotify(credentials: dict) -> SpotifyOAuth:
     """Trigger Spotify authentication and return current token.
 
     Args:
@@ -54,7 +60,7 @@ def login_to_spotify(credentials):
     return sp
 
 
-def main_menu(sp):
+def main_menu(sp: SpotifyOAuth) -> None:
     """Print main menu.
 
     This function handles printing available options and getting

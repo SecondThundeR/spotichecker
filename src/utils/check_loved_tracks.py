@@ -10,8 +10,10 @@ This file can also be imported as a module and contains the following functions:
 
 import time
 
+from spotipy.oauth2 import SpotifyOAuth
 
-def __check_for_unavailable_songs(sp):
+
+def __check_for_unavailable_songs(sp: SpotifyOAuth) -> dict:
     """Get "Loved Tracks" and check for unavailable.
 
     Args:
@@ -46,7 +48,7 @@ def __check_for_unavailable_songs(sp):
     }
 
 
-def __print_check_details(tracks_info):
+def __print_check_details(tracks_info: dict) -> None:
     """Get info from check and print summary of it.
 
     Because of the way "Loved Tracks" are checked, function for
@@ -69,7 +71,7 @@ def __print_check_details(tracks_info):
     print("===============================")
 
 
-def check_loved_tracks(sp):
+def check_loved_tracks(sp: SpotifyOAuth) -> None:
     """Run all needed functions to check user's "Loved Tracks".
 
     This function also handles calculating time of the check

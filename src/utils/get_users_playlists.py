@@ -9,10 +9,13 @@ This file can also be imported as a module and contains the following functions:
 
 
 import time
+
+from spotipy.oauth2 import SpotifyOAuth
+
 from src.utils.check_playlist_tracks import check_playlist_tracks
 
 
-def __fetch_users_playlists(sp):
+def __fetch_users_playlists(sp: SpotifyOAuth) -> None:
     """Get all user's playlists and return only created ones
 
     Args:
@@ -36,7 +39,7 @@ def __fetch_users_playlists(sp):
         "playlists_count": user_playlists_counter
     }
 
-def __print_check_details(playlists, time):
+def __print_check_details(playlists: dict, time: float) -> None:
     """Get info from check and print summary of it.
 
     Args:
@@ -55,7 +58,7 @@ def __print_check_details(playlists, time):
     print("===============================")
 
 
-def __select_playlist_to_check(sp, playlists):
+def __select_playlist_to_check(sp: SpotifyOAuth, playlists: dict) -> None:
     """Give user choice to select playlist for checking.
 
     Args:
@@ -79,7 +82,7 @@ def __select_playlist_to_check(sp, playlists):
     check_playlist_tracks(sp, chosen_playlist['id'])
 
 
-def get_users_playlists(sp):
+def get_users_playlists(sp: SpotifyOAuth) -> None:
     """Get and print playlists, created by user.
 
     This function gets user's playlists and prints them.

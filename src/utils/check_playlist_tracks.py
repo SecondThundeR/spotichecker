@@ -9,10 +9,12 @@ This file can also be imported as a module and contains the following functions:
 
 
 import time
+
+from spotipy.oauth2 import SpotifyOAuth
 from spotipy.exceptions import SpotifyException
 
 
-def __get_playlist_name(sp, playlist_id):
+def __get_playlist_name(sp: SpotifyOAuth, playlist_id: str) -> str | None:
     """Fetch playlist by ID and return its name.
 
     This function uses try/catch to check if playlist exists
@@ -37,7 +39,7 @@ def __get_playlist_name(sp, playlist_id):
     return playlist_name
 
 
-def __check_for_unavailable_songs(sp, playlist_id):
+def __check_for_unavailable_songs(sp: SpotifyOAuth, playlist_id: str) -> dict:
     """Get playlist tracks and check for unavailable.
 
     Args:
@@ -82,7 +84,7 @@ def __check_for_unavailable_songs(sp, playlist_id):
     }
 
 
-def __print_check_details(playlist_name, tracks_info):
+def __print_check_details(playlist_name: str, tracks_info: dict) -> None:
     """Get info from check and print summary of it.
 
     Args:
@@ -115,7 +117,7 @@ def __print_check_details(playlist_name, tracks_info):
     return
 
 
-def check_playlist_tracks(sp, playlist_id):
+def check_playlist_tracks(sp: SpotifyOAuth, playlist_id: str) -> None:
     """Run all needed functions to check a playlist.
 
     This function also handles calculating time of the check

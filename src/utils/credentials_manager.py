@@ -11,14 +11,11 @@ This file can also be imported as a module and contains the following functions:
 import configparser
 
 
-def initial_configuration():
+def initial_configuration() -> dict:
     """Manage initial configuration of .ini file.
 
     This function handles getting CLIENT_ID and CLIENT_SECRET and
     writing this to .ini file for futher access and use.
-
-    Args:
-        config_obj (ConfigParser): ConfigParser object to create new .ini file.
 
     Returns:
         dict: Dictionary of CLIEND_ID and CLIEND_SECRET.
