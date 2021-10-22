@@ -4,10 +4,12 @@ This module contains functions for managing credentials for
 further use in script.
 
 This file can also be imported as a module and contains the following functions:
-    * initial_configuration() - manages initial configuration of .ini file
+    * initial_configuration - manages initial configuration of .ini file
+    * credentials_checker - check for credentials file existance
 """
 
 
+import os
 import configparser
 
 
@@ -46,3 +48,24 @@ def initial_configuration() -> dict:
         config.write(configfile)
     print("Great. 'spotichecker.ini' was successfully created!\n")
     return credentials_data
+
+
+def credentials_checker() -> dict:
+    """Check for credentials file existance.
+
+    If credentials file doesn't exist, run initial setup to
+    create a new credentials file.
+
+    Returns:
+        dict: Dictionary with CLIENT_ID and CLIENT_SECRET
+    """
+    if os.path.isfile("spotichecker.ini"):
+        config = configparser.ConfigParser()
+        config.read("spotichecker.ini")
+        return {
+            "CLIENT_ID": config["CREDENTIALS"]["CLIENT_ID"],
+            "CLIENT_SECRET": config["CREDENTIALS"]["CLIENT_SECRET"]
+        }
+    else:
+        credentials_data = initial_configuration()
+        return credentials_data
