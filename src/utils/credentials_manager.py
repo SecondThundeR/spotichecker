@@ -22,8 +22,7 @@ def initial_configuration() -> dict:
     Returns:
         dict: Dictionary of CLIENT_ID and CLIENT_SECRET.
     """
-    print("It looks like you are here for the first time, "
-          "let's set everything up!")
+    print("It looks like you are here for the first time. Let's set everything up!")
     print("Enter your CLIENT_ID:")
     while True:
         client_id = input("> ")
@@ -38,13 +37,10 @@ def initial_configuration() -> dict:
             print("You entered nothing. Try again.")
             continue
         break
-    credentials_data = {
-        "CLIENT_ID": client_id,
-        "CLIENT_SECRET": client_secret
-    }
+    credentials_data = {"CLIENT_ID": client_id, "CLIENT_SECRET": client_secret}
     config = configparser.ConfigParser()
     config["CREDENTIALS"] = credentials_data
-    with open("spotichecker.ini", "w") as configfile:
+    with open("spotichecker.ini", "w", encoding="utf-8") as configfile:
         config.write(configfile)
     print("Great. 'spotichecker.ini' was successfully created!\n")
     return credentials_data
@@ -64,8 +60,7 @@ def credentials_checker() -> dict:
         config.read("spotichecker.ini")
         return {
             "CLIENT_ID": config["CREDENTIALS"]["CLIENT_ID"],
-            "CLIENT_SECRET": config["CREDENTIALS"]["CLIENT_SECRET"]
+            "CLIENT_SECRET": config["CREDENTIALS"]["CLIENT_SECRET"],
         }
-    else:
-        credentials_data = initial_configuration()
-        return credentials_data
+    credentials_data = initial_configuration()
+    return credentials_data

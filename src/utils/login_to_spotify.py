@@ -23,10 +23,12 @@ def login_to_spotify(credentials: dict) -> SpotifyOAuth:
     Returns:
         spotipy.oauth2.SpotifyOAuth: Spotify OAuth object.
     """
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-        client_id=credentials["CLIENT_ID"],
-        client_secret=credentials["CLIENT_SECRET"],
-        redirect_uri="http://localhost:8080",
-        scope=SCOPES
-    ))
+    sp = spotipy.Spotify(
+        auth_manager=SpotifyOAuth(
+            client_id=credentials["CLIENT_ID"],
+            client_secret=credentials["CLIENT_SECRET"],
+            redirect_uri="http://localhost:8080",
+            scope=SCOPES,
+        )
+    )
     return sp
