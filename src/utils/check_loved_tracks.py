@@ -64,7 +64,7 @@ def __print_check_details(tracks_info: dict) -> None:
         print(f"All ({tracks_count}) tracks are available for listening!")
         print("===============================")
         return
-    print(f"{un_count} track(s) out of {tracks_count} track(s) are unavilable!")
+    print(f"{un_count} track(s) out of {tracks_count} track(s) are unavailable!")
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
         print(f"[{pos}] Track {name} is unavailable in your country")

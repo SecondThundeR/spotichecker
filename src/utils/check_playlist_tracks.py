@@ -115,13 +115,13 @@ def __print_check_details(playlist_name: str, tracks_info: dict) -> None:
         return
     if local_count > 0:
         print(
-            f'{un_count} out of {non_local_count} track(s) are unavilable in "{playlist_name}"!'
+            f'{un_count} out of {non_local_count} track(s) are unavailable in "{playlist_name}"!'
         )
         print(f"[Note] Ignored {local_count} local track(s)")
         print("===============================")
     else:
         print(
-            f'{un_count} out of {tracks_count} track(s) are unavilable in "{playlist_name}"!'
+            f'{un_count} out of {tracks_count} track(s) are unavailable in "{playlist_name}"!'
         )
     print("\nHere are all list of unavailable songs:")
     for pos, name in tracks_info["un_tracks"].items():
